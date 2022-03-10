@@ -1,0 +1,56 @@
+Design of game:
+
+Game aim is to create environment of artillery commander who have to shoot target behind mountain.
+
+Each game will consist off 10 rounds, in each round you will have to hit as close to target in wind condition.
+Targeting will be done by adjusting angle of barrel. Wind direction and target position will be generated randomly
+for each round.
+Physics will take account of bullet drag, mass in wind conditions.
+
+Physics(run thread no. 1)
+#VARIABLES FROM JSON CONFIG FILE
+physical_timescale = 0.1        # physical time scale, determined how often physical calculations should be conducted,
+                                # higher more accurate but more calculations in [s]
+gravity_acceleration = 9.8065   # gravity of earth, assumed constant during movement of projectile in [m/s2]
+air_density = 1.1               # density of pressure, assumed constant during movement of projectile in [kg/m3]
+wind_boundaries = 15            # range of wind speed in [m/s]
+
+class PhysicsSimulation():
+    """
+    Class that will conduct all physics calculations on objects
+    """
+    def __init__(self, timescale, gravity, air_density, *args, **kwargs)
+        super().__init__(*args, **kwargs)
+        self.timescale = timescale # physical timescale, determined how often physical calculations should be conducted
+        self.gravity = gravity # gravity of planet, assumed constant during movement of projectile in [m/s2]
+        self.air_density = air_density # density of pressure, assumed constant during movement of projectile in [kg/m3]
+        self.wind_object #to generator of wind speed
+        self.wind_speed = self.wind_object.__next__()
+        self.__objects = []
+
+    def add_object(self, object):
+        """
+        Method that will add object to list of objects
+        """
+        self.__objects.append(object)
+
+    def run_simulation(self):
+        """
+        Method that will start simulation
+        """
+
+    def check_collision(self):
+        """
+        Method to check collision between objects and terrain
+        """
+
+    def apply_gravity(self):
+        """
+        Method that will apply all gravity effects on objects
+        """
+
+    def apply_drag(self):
+        """
+        Method that will apply drag effects on objects
+        """
+

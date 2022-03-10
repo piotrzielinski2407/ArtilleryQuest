@@ -1,0 +1,4 @@
+{"physical_timescale": 0.001,
+  "gravity_acceleration": 9.8065,
+  "air_density": 1.1,
+  "wind_boundaries" : 30 }
