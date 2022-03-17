@@ -57,8 +57,9 @@ class PhysicsSimulation:
 
             for object2_boundary in object2.geometry.geometry_boundaries:
                 collision_happen = self.check_boundary_collision(object1_boundary, object2_boundary)
-            if collision_happen is True:
-                return collision_happen
+                if collision_happen is True:
+                    return collision_happen
+        return collision_happen
 
     @staticmethod
     def check_boundary_collision(boundary1, boundary2):

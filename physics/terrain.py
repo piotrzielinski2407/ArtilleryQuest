@@ -24,7 +24,3 @@ class Terrain(UniversalObject):
         self.geometry = Geometry(self.ref_point, self.terrain_config["geometry"][terrain_variant],
                                  enclosed_geometry=False)
         self.status = True  # status equal to True means that object isn't collide with any obstacles
-
-    def simulate_time_step(self, time_scale=None, gravity=None,
-                           wind_speed=None, density=None):
-        self.geometry.update(self.ref_point)
