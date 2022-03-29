@@ -1,8 +1,8 @@
 from unittest import TestCase
-from objects_physics import PhysicsSimulation
+from simulation import PhysicsSimulation
 from boundary import Boundary
 from point import Point
-from universal_object import UniversalObject
+from physical_object import UniversalPhysicalObject
 from geometry import Geometry
 
 test_time_scale = 0.001
@@ -40,11 +40,11 @@ class TestPhysicsSimulation(TestCase):
 
         ref_point_ = Point(0, 0)
 
-        object1 = UniversalObject()
+        object1 = UniversalPhysicalObject()
         object1.geometry = Geometry(ref_point_, geometry1_cords)
-        object2 = UniversalObject()
+        object2 = UniversalPhysicalObject()
         object2.geometry = Geometry(ref_point_, geometry2_cords)
-        object3 = UniversalObject()
+        object3 = UniversalPhysicalObject()
         object3.geometry = Geometry(ref_point_, geometry3_cords)
 
         test_stack = [[object1, object2, True],
@@ -66,15 +66,15 @@ class TestPhysicsSimulation(TestCase):
 
         ref_point_ = Point(0, 0)
 
-        object1 = UniversalObject()
+        object1 = UniversalPhysicalObject()
         object1.geometry = Geometry(ref_point_, geometry1_cords)
         object1.status = False
         object1.colision_dependent = True
-        object2 = UniversalObject()
+        object2 = UniversalPhysicalObject()
         object2.geometry = Geometry(ref_point_, geometry2_cords)
         object2.status = False
         object2.colision_dependent = True
-        object3 = UniversalObject()
+        object3 = UniversalPhysicalObject()
         object3.geometry = Geometry(ref_point_, geometry3_cords)
         object3.status = False
         object3.colision_dependent = True

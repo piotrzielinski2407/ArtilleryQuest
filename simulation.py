@@ -5,6 +5,10 @@ from itertools import combinations
 class PhysicsSimulation:
     """
     Class that will conduct all physics calculations on objects
+    1.Add objects to simulation
+    2.Simulate time step
+    3.Feed graphic render
+    4.Clean-up
     """
 
     def __init__(self, timescale, gravity, air_density, *args, **kwargs):
@@ -22,15 +26,27 @@ class PhysicsSimulation:
         """
         self.__objects.append(object_to_add)
 
-    def run_simulation(self):
+    def clean_up_objects(self):
+        new_object_list = []
+        for object_to_check in self.__objects:
+            if object_to_check.status is True:
+                new_object_list.append(object_to_check)
+        return new_object_list
+
+    def graphic_render_feed(self):
+        chunks = []
+        for object_to_render in self.__objects:
+            chunks.append(object_to_render.return_graphic_chunk())
+        return chunks
+
+    def run_time_step(self):
         """
-        Method that will start simulation
+        Method that will simulate time-step
         """
-        while True:
-            for physical_object in self.__objects:
-                physical_object.simulate_time_step(self, time_scale=self.timescale, gravity=self.gravity,
-                                                   wind_speed=self.wind_speed, density=self.air_density)
-            self.check_collisions()
+        for physical_object in self.__objects:
+            physical_object.simulate_time_step(self.timescale, self.gravity,
+                                               self.wind_speed, self.air_density)
+        self.check_collisions()
 
     def check_collisions(self):
         """

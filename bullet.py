@@ -1,10 +1,10 @@
 from math import radians, cos, sin
 from geometry import Geometry
 from point import Point
-from universal_object import UniversalObject
+from physical_object import UniversalPhysicalObject
 
 
-class Bullet(UniversalObject):
+class Bullet(UniversalPhysicalObject):
     """
     Class that will calculate bullet movement in time from fire moment to hit the ground, movement will be pass
     by a tuple with coordinates x, y, where x is horizontal and y is vertical position.
@@ -13,6 +13,24 @@ class Bullet(UniversalObject):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # set-up universal object properties
+        self.id = self.id  # from inheritance: UniversalObject
+        self.x_position = self.x_position  # from inheritance: UniversalObject
+        self.y_position = self.y_position  # from inheritance: UniversalObject
+        self.ref_point = self.ref_point  # from inheritance: UniversalObject
+        self.geometry = self.geometry  # from inheritance: UniversalObject
+        # set-up graphical object properties
+        self.boundary_color = 'red'  # boundary color for graphic render
+        self.boundary_thickness = 1  # thickness of boundary line
+        self.fill_color = 'black'  # color to fill in
+        self.fill_object = True  # if True, graphic render will fill created boundary with fill_color
+        self.explode_on_hit = True
+        # set-up physical object properties
+        self.gravity_dependent = True  # Is object is affected by gravity
+        self.drag_dependent = True  # Is object is affected by air drag
+        self.colision_dependent = True  # Is object collision cause it's destruction
+        self.physics_circle_optimization = True  # Is object should use circle optimization,
+        # not recommended for big objects
         # declare here only bullet object properties
         self.bullets_config = self.load_config_file("bullets_config.json")
         self.mass = None
@@ -21,12 +39,6 @@ class Bullet(UniversalObject):
         self.initial_speed = None  # initial speed of bullet (from bullet type)
         self.x_speed = None
         self.y_speed = None
-        # set-up universal object properties
-        self.gravity_dependent = True  # Is object is affected by gravity
-        self.drag_dependent = True  # Is object is affected by air drag
-        self.colision_dependent = True  # Is object collision cause it's destruction
-        self.physics_circle_optimization = True  # Is object should use circle optimization,
-        # not recommended for big objects
 
     def load_bullet(self, bullet_type, x_position=0, y_position=0):
         """
@@ -94,6 +106,7 @@ class Bullet(UniversalObject):
         if self.drag_dependent:
             self.apply_drag(time_scale, wind_speed, density)
         self.geometry.update(self.ref_point)
+# TODO Tests bullet
 
 
 if __name__ == "__main__":
@@ -110,6 +123,7 @@ if __name__ == "__main__":
     test_y_speed = []
 
     bullet = Bullet()
+    bullet2 = Bullet()
     test_bullet_type = 'Bullet1'
     bullet.load_bullet(test_bullet_type)
     bullet.shoot_bullet(test_angle)

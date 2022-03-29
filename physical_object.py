@@ -1,15 +1,13 @@
-class UniversalObject:
+from graphic_object import UniversalGraphicObject
+
+
+class UniversalPhysicalObject(UniversalGraphicObject):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.x_position = None
-        self.y_position = None
-        self.ref_point = None
         self.gravity_dependent = None  # Is object is affected by gravity
         self.drag_dependent = None  # Is object is affected by air drag
         self.colision_dependent = None  # Is object collision cause it's destruction
         self.physics_circle_optimization = None  # Is object should use circle optimization,
-        self.geometry = None
-        self.status = None  # status equal to True means that object isn't collide with any obstacles
 
     @property
     def status(self):
