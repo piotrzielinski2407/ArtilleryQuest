@@ -19,6 +19,7 @@ class PhysicsSimulation:
         self.wind_object = wind_gen()  # to generator of wind speed
         self.wind_speed = self.wind_object.__next__()
         self.__objects = []
+    # TODO each object is one turtle
 
     def add_object(self, object_to_add):
         """
@@ -26,7 +27,7 @@ class PhysicsSimulation:
         """
         self.__objects.append(object_to_add)
 
-    def clean_up_objects(self):
+    def __clean_up_objects(self):
         new_object_list = []
         for object_to_check in self.__objects:
             if object_to_check.status is True:
@@ -47,21 +48,23 @@ class PhysicsSimulation:
             physical_object.simulate_time_step(self.timescale, self.gravity,
                                                self.wind_speed, self.air_density)
         self.check_collisions()
+        self.__objects = self.__clean_up_objects()
 
     def check_collisions(self):
         """
         Method to check collision between all objects
         """
         no_of_objects = len(self.__objects)
-        check_sequence = list(combinations(list(range(no_of_objects)), 2))
 
-        for sequence in check_sequence:
-            object1 = self.__objects[sequence[0]]
-            object2 = self.__objects[sequence[1]]
-            collision_happen = self.check_objects_collision(object1, object2)
-            if collision_happen is True:
-                object1.collision_occur()
-                object2.collision_occur()
+        if no_of_objects > 1:
+            check_sequence = list(combinations(list(range(no_of_objects)), 2))
+            for sequence in check_sequence:
+                object1 = self.__objects[sequence[0]]
+                object2 = self.__objects[sequence[1]]
+                collision_happen = self.check_objects_collision(object1, object2)
+                if collision_happen is True:
+                    object1.collision_occur()
+                    object2.collision_occur()
 
     def check_objects_collision(self, object1, object2):
         """
@@ -74,6 +77,7 @@ class PhysicsSimulation:
             for object2_boundary in object2.geometry.geometry_boundaries:
                 collision_happen = self.check_boundary_collision(object1_boundary, object2_boundary)
                 if collision_happen is True:
+                    print(object1_boundary, object2_boundary)
                     return collision_happen
         return collision_happen
 
@@ -83,7 +87,8 @@ class PhysicsSimulation:
             if boundary2.a is not None:
                 if boundary1.a != boundary2.a:
                     x_intersect = (boundary2.b-boundary1.b)/(boundary1.a-boundary2.a)
-                    if (x_intersect >= boundary1.x1) and (x_intersect <= boundary1.x2):
+                    if (x_intersect >= boundary1.x1) and (x_intersect <= boundary1.x2) and \
+                            (x_intersect >= boundary2.x1) and (x_intersect <= boundary2.x2):
                         return True
                     else:
                         return False
@@ -93,7 +98,11 @@ class PhysicsSimulation:
                     else:
                         return False
             else:
-                if (boundary2.x1 >= boundary1.x1) and (boundary2.x1 <= boundary1.x2):
+                y_intersection = boundary1.a * boundary2.x1 + boundary1.b
+                if (y_intersection >= min(boundary2.y1, boundary2.y2)) and \
+                        (y_intersection <= max(boundary2.y1, boundary2.y2)) and \
+                        (boundary2.x1 >= min(boundary1.x1, boundary1.x2)) and \
+                        (boundary2.x1 <= max(boundary1.x1, boundary1.x2)):
                     return True
                 else:
                     return False

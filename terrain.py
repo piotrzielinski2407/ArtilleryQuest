@@ -14,7 +14,7 @@ class Terrain(UniversalPhysicalObject):
         # set-up graphical object properties
         self.boundary_color = "green"
         self.boundary_thickness = 3
-        self.fill_color = "brown"
+        self.fill_color = "green"
         self.fill_object = True
         self.explode_on_hit = False
         # set-up physical object properties
@@ -30,5 +30,5 @@ class Terrain(UniversalPhysicalObject):
         self.y_position = y_position
         self.ref_point = Point(self.x_position, self.y_position)
         self.geometry = Geometry(self.ref_point, self.terrain_config["geometry"][terrain_variant],
-                                 enclosed_geometry=False)
+                                 enclosed_geometry=True)
         self.status = True  # status equal to True means that object isn't collide with any obstacles

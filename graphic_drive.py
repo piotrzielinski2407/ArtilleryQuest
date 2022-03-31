@@ -1,7 +1,10 @@
 import turtle
 scale_factor = 0.1
+screen_margin = 20
 screen_size_width = 1600
 screen_size_height = 900
+screen_offset_horizontal = screen_margin - screen_size_width/2
+screen_offset_vertical = screen_margin - screen_size_height/2
 
 
 class GraphicDriver:
@@ -9,14 +12,14 @@ class GraphicDriver:
         super().__init__(*args, **kwargs)
         self.buffer = {}  # list of objects to render
         self.turtle_base = turtle
-        self.turtle = turtle.Turtle()
+        self.turtle = self.turtle_base.Turtle()
         self.screen = self.turtle.getscreen()
         self.__pre_sets()
 
     def __pre_sets(self):
-        turtle.setup(screen_size_width, screen_size_height)
+        self.turtle_base.setup(screen_size_width, screen_size_height)
         self.turtle.speed('fastest')
-        turtle.tracer(n=0)
+        self.turtle_base.tracer(n=0)
         self.turtle.hideturtle()
 
     def update_screen(self, chunks_to_render):
@@ -27,8 +30,7 @@ class GraphicDriver:
             self.__render_chunk(chunk)
 
         self.buffer = self.__buffer_clean_up()
-        turtle.update()
-
+        self.turtle_base.update()
 
     def __buffer_clean_up(self):
         new_buffer = {}
@@ -65,9 +67,10 @@ class GraphicDriver:
         lines_to_draw = geometry.geometry_boundaries
         for line in lines_to_draw:
             self.turtle.penup()
-            self.turtle.goto(line.x1, line.y1)
+            self.turtle.goto(line.x1 + screen_offset_horizontal, line.y1 + screen_offset_vertical)
             self.turtle.pendown()
-            self.turtle.goto(line.x2, line.y2)
+            self.turtle.goto(line.x2 + screen_offset_horizontal, line.y2 + screen_offset_vertical)
+            self.turtle.penup()
 
 
 if __name__ == "__main__":
