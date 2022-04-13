@@ -7,6 +7,7 @@ class UniversalPhysicalObject(UniversalGraphicObject):
         self.gravity_dependent = None  # Is object is affected by gravity
         self.drag_dependent = None  # Is object is affected by air drag
         self.colision_dependent = None  # Is object collision cause it's destruction
+        self.check_for_collision = True  # If collision should be checked on that item
         self.physics_circle_optimization = None  # Is object should use circle optimization,
 
     @property

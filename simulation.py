@@ -1,5 +1,7 @@
 from wind import wind_gen
+from wind_arrow import WindArrow
 from itertools import combinations
+from text_object import TextObject
 
 
 class PhysicsSimulation:
@@ -17,15 +19,33 @@ class PhysicsSimulation:
         self.gravity = gravity  # gravity of planet, assumed constant during movement of projectile in [m/s2]
         self.air_density = air_density  # density of pressure, assumed constant during movement of projectile in [kg/m3]
         self.wind_object = wind_gen()  # to generator of wind speed
-        self.wind_speed = self.wind_object.__next__()
         self.__objects = []
-    # TODO each object is one turtle
+        self.wind_speed = 5
+        self.wind_arrow = WindArrow()
+        self.__wind_text = TextObject(5, 820)
+        self.update_wind()
+        self.__texts = []
+        self.add_text(self.__wind_text)
+
+    @property
+    def wind_arrow(self):
+        return self._wind_arrow
+
+    @wind_arrow.setter
+    def wind_arrow(self, new_value):
+        if new_value is not None:
+            self._wind_arrow = new_value
+            self._wind_arrow.set_up_arrow(self.wind_speed)
+            self.add_object(self._wind_arrow)
 
     def add_object(self, object_to_add):
         """
         Method that will add object to list of objects
         """
         self.__objects.append(object_to_add)
+
+    def add_text(self, text_to_add):
+        self.__texts.append(text_to_add)
 
     def __clean_up_objects(self):
         new_object_list = []
@@ -38,7 +58,8 @@ class PhysicsSimulation:
         chunks = []
         for object_to_render in self.__objects:
             chunks.append(object_to_render.return_graphic_chunk())
-        return chunks
+
+        return chunks, self.__texts
 
     def run_time_step(self):
         """
@@ -61,10 +82,11 @@ class PhysicsSimulation:
             for sequence in check_sequence:
                 object1 = self.__objects[sequence[0]]
                 object2 = self.__objects[sequence[1]]
-                collision_happen = self.check_objects_collision(object1, object2)
-                if collision_happen is True:
-                    object1.collision_occur()
-                    object2.collision_occur()
+                if (object1.check_for_collision is True) and (object2.check_for_collision is True):
+                    collision_happen = self.check_objects_collision(object1, object2)
+                    if collision_happen is True:
+                        object1.collision_occur()
+                        object2.collision_occur()
 
     def check_objects_collision(self, object1, object2):
         """
@@ -77,9 +99,15 @@ class PhysicsSimulation:
             for object2_boundary in object2.geometry.geometry_boundaries:
                 collision_happen = self.check_boundary_collision(object1_boundary, object2_boundary)
                 if collision_happen is True:
-                    print(object1_boundary, object2_boundary)
                     return collision_happen
         return collision_happen
+
+    def update_wind(self):
+        new_wind_speed = self.wind_object.__next__()
+        text_to_marker = str(abs(round(new_wind_speed,2))) + ' m/s'
+        self.__wind_text.update_text(text_to_marker)
+        self.wind_speed = new_wind_speed
+        self._wind_arrow.set_up_arrow(self.wind_speed)
 
     @staticmethod
     def check_boundary_collision(boundary1, boundary2):

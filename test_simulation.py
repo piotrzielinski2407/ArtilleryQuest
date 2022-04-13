@@ -23,9 +23,7 @@ class TestPhysicsSimulation(TestCase):
             [Boundary(Point(-2, -2), Point(2, 2)), Boundary(Point(0, -5), Point(0, 5)), True],
             [Boundary(Point(-5, 5), Point(5, 5)), Boundary(Point(0, 0), Point(0, 10)), True],
             [Boundary(Point(-5, 5), Point(-5, 5)), Boundary(Point(-5, 2), Point(-5, 2)), False],
-            [Boundary(Point(-5, 5), Point(5, 5)), Boundary(Point(-5, 5), Point(5, 5)), True],
-            [Boundary(Point(500, 600), Point(700, 20)), Boundary(Point(491.20183831549906, 625.9903358645093), Point(491.20183831549906, 615.9903358645093)), False]
-        ]
+            [Boundary(Point(-5, 5), Point(5, 5)), Boundary(Point(-5, 5), Point(5, 5)), True]]
         test_object = PhysicsSimulation(test_time_scale, test_gravity, test_density)
         for test_pack in test_stack:
             boundary1 = test_pack[0]

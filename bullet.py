@@ -39,10 +39,12 @@ class Bullet(UniversalPhysicalObject):
         self.initial_speed = None  # initial speed of bullet (from bullet type)
         self.x_speed = None
         self.y_speed = None
+        self.angle = None
 
-    def load_bullet(self, bullet_type, x_position=0, y_position=0):
+    def load_bullet(self, shoot_angle, bullet_type, x_position=0, y_position=0):
         """
         method that will set up all bullet parameters
+        :param shoot_angle: int
         :param bullet_type: string
         :param x_position: int
         :param y_position: int
@@ -59,15 +61,16 @@ class Bullet(UniversalPhysicalObject):
         self.y_speed = 0
         self.status = True  # status equal to True means that object isn't collide with any obstacles
         self.geometry = Geometry(self.ref_point, self.bullets_config[bullet_type]['geometry'])
+        self.angle = shoot_angle
 
-    def shoot_bullet(self, shoot_angle):
+    def shoot_bullet(self):
         """
         Method that will start bullet movement
         """
         # angle of shoot in deg. 0 deg means shoot fully horizontally in +x dir
-        self.x_speed = self.initial_speed * cos(radians(shoot_angle))
+        self.x_speed = self.initial_speed * sin(radians(self.angle))
         # speed of bullet in x direction, initially equal to 0
-        self.y_speed = self.initial_speed * sin(radians(shoot_angle))
+        self.y_speed = self.initial_speed * cos(radians(self.angle))
         # speed of bullet in y direction, initially equal to 0
 
     def update_position(self, time_scale):
